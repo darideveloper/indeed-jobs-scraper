@@ -49,12 +49,13 @@ def main ():
                 res = requests.get (url)
                 
                 # Generate css selectors for get data
-                selector_article = "#p_ofertas article"
-                selector_title = f"{selector_article} h1"
-                selector_company = f"{selector_article} .fs16.fc_base.mt5.mb10"
-                selector_details = f"{selector_article} .fc_aux.t_word_wrap.mb10.hide_m"
-                selector_date = f"{selector_article} .fs13.fc_aux"
-                selector_link = f"{selector_article} h1 a"
+                selector_article = "ul.jobsearch-ResultsList li .job_seen_beacon"
+                selector_title = f"h2"
+                selector_company = f".companyName"
+                selector_salary = f".salary-snippet-container"
+                selector_details = f".job-snippet"
+                selector_date = f".date"
+                selector_link = f"h2 a"
 
                 # Get number of articles in the current page
                 soup = bs4.BeautifulSoup (res.text, "html.parser")
@@ -64,7 +65,8 @@ def main ():
                 for article in articles:
 
                     # Skeip duplicated jobs
-                    id = article.get ("id")
+                    link_elem = article.select (selector_link)[0]
+                    id = link_elem.get ("id")
                     if id in jobs_ids:
                         continue
                     else:
@@ -75,7 +77,7 @@ def main ():
                     company = article.select (selector_company)[0].getText()
                     details = article.select (selector_details)[0].getText()
                     date = article.select (selector_date)[0].getText()
-                    link =  f"www.{indeed_page}" + article.select (selector_link)[0].attrs ["href"]
+                    link =  f"www.{indeed_page}" + link_elem.attrs ["href"]
                     
                     # Clean data
                     title = title.strip().replace("\n", "").replace (",", "").replace ("\r\r", " ").replace ("\r", "")
@@ -85,6 +87,7 @@ def main ():
 
                     # Add data to csv
                     row_data = [keyword, location, title, company, details, date, link]
+                    print (row_data)
                     csv_writter.writerow (row_data)
 
                 # Load more pages
