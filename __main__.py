@@ -12,7 +12,7 @@ def main ():
 
     # Read categories, keywords and locations from json
     credentials = Config()
-    computrabajo_page = credentials.get("computrabajo")
+    indeed_page = credentials.get("indeed")
     keywords = credentials.get("keywords")
     locations = credentials.get("locations")
 
@@ -22,7 +22,7 @@ def main ():
     csv_writter = csv.writer(csv_file)
 
     # Write colum titles 
-    headers = ["keyword", "location", "title", "company", "details", "date"]
+    headers = ["keyword", "location", "title", "company", "details", "date", "link"]
     csv_writter.writerow (headers)
 
     # Search each keyword
@@ -38,12 +38,12 @@ def main ():
             while True:
 
                 # Print status
-                logger.info (f"Scraping data of {keyword} in {location}, page: {current_page}")
+                logger.info (f"Scraping data of {keyword} in {location}, page: {indeed_page}")
 
                 # generate url with keyword and location
-                location_formated = location.lower().replace(' ', '-')
-                keyword_formated = keyword.lower().replace(' ', '-')
-                url = f"https://www.{computrabajo_page}/trabajo-de-{keyword_formated}-en-{location_formated}?p={current_page}"
+                location_formated = location.lower().replace(' ', '%20')
+                keyword_formated = keyword.lower().replace(' ', '%20')
+                url = f"https://{indeed_page}/jobs?q=&l={location_formated}&q={keyword_formated}"
                 
                 # Get page data page
                 res = requests.get (url)
@@ -54,6 +54,7 @@ def main ():
                 selector_company = f"{selector_article} .fs16.fc_base.mt5.mb10"
                 selector_details = f"{selector_article} .fc_aux.t_word_wrap.mb10.hide_m"
                 selector_date = f"{selector_article} .fs13.fc_aux"
+                selector_link = f"{selector_article} h1 a"
 
                 # Get number of articles in the current page
                 soup = bs4.BeautifulSoup (res.text, "html.parser")
@@ -73,7 +74,8 @@ def main ():
                     title = article.select (selector_title)[0].getText()
                     company = article.select (selector_company)[0].getText()
                     details = article.select (selector_details)[0].getText()
-                    date = article.select (selector_date)[0].getText().strip()
+                    date = article.select (selector_date)[0].getText()
+                    link =  f"www.{indeed_page}" + article.select (selector_link)[0].attrs ["href"]
                     
                     # Clean data
                     title = title.strip().replace("\n", "").replace (",", "").replace ("\r\r", " ").replace ("\r", "")
@@ -82,7 +84,7 @@ def main ():
                     date = date.strip().replace("\n", "").replace (",", "").replace ("\r\r", " ").replace ("\r", "")
 
                     # Add data to csv
-                    row_data = [keyword, location, title, company, details, date]
+                    row_data = [keyword, location, title, company, details, date, link]
                     csv_writter.writerow (row_data)
 
                 # Load more pages
