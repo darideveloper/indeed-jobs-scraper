@@ -31,19 +31,19 @@ def main ():
         # Search location
         for location in locations:
 
-
             # Loop fopr extract all pages
-            current_page = 1
-            selector_next_page = 'span[title="Siguiente"]'
+            start_job = 0
+            page = 1
+            selector_next_page = 'ul.pagination-list > li:last-child a svg'
             while True:
 
                 # Print status
-                logger.info (f"Scraping data of {keyword} in {location}, page: {indeed_page}")
+                logger.info (f"Scraping data of {keyword} in {location}, page: {page}")
 
                 # generate url with keyword and location
                 location_formated = location.lower().replace(' ', '%20')
                 keyword_formated = keyword.lower().replace(' ', '%20')
-                url = f"https://{indeed_page}/jobs?q=&l={location_formated}&q={keyword_formated}"
+                url = f"https://{indeed_page}/jobs?q=&l={location_formated}&q={keyword_formated}&start={start_job}"
                 
                 # Get page data page
                 res = requests.get (url)
@@ -74,7 +74,10 @@ def main ():
 
                     # Get job data
                     title = article.select (selector_title)[0].getText()
-                    company = article.select (selector_company)[0].getText()
+                    try:
+                        company = article.select (selector_company)[0].getText()
+                    except:
+                        company = ""
                     details = article.select (selector_details)[0].getText()
                     date = article.select (selector_date)[0].getText()
                     link =  f"www.{indeed_page}" + link_elem.attrs ["href"]
@@ -87,13 +90,13 @@ def main ():
 
                     # Add data to csv
                     row_data = [keyword, location, title, company, details, date, link]
-                    print (row_data)
                     csv_writter.writerow (row_data)
 
                 # Load more pages
                 next_button = soup.select (selector_next_page)
                 if next_button:
-                    current_page+=1
+                    start_job+=15
+                    page+=1
                 else:
                     break
 
