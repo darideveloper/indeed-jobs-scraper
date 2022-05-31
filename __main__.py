@@ -22,7 +22,7 @@ def main ():
     csv_writter = csv.writer(csv_file)
 
     # Write colum titles 
-    headers = ["keyword", "location", "title", "company", "details", "date", "link"]
+    headers = ["keyword", "location", "title", "company", "salary", "details", "date", "link"]
     csv_writter.writerow (headers)
 
     # Search each keyword
@@ -78,18 +78,24 @@ def main ():
                         company = article.select (selector_company)[0].getText()
                     except:
                         company = ""
+                    try:
+                        salary = article.select (selector_salary)[0].getText()
+                    except:
+                        salary = ""
                     details = article.select (selector_details)[0].getText()
                     date = article.select (selector_date)[0].getText()
-                    link =  f"www.{indeed_page}" + link_elem.attrs ["href"]
+                    link =  indeed_page + link_elem.attrs ["href"]
+
                     
                     # Clean data
                     title = title.strip().replace("\n", "").replace (",", "").replace ("\r\r", " ").replace ("\r", "")
                     company = company.strip().replace("\n", "").replace (",", "").replace ("\r\r", " ").replace ("\r", "")
+                    salary =  salary.strip().replace("\n", "").replace (",", "").replace ("\r\r", " ").replace ("\r", "")
                     details = details.strip().replace("\n", "").replace (",", "").replace ("\r\r", " ").replace ("\r", "")
                     date = date.strip().replace("\n", "").replace (",", "").replace ("\r\r", " ").replace ("\r", "")
 
                     # Add data to csv
-                    row_data = [keyword, location, title, company, details, date, link]
+                    row_data = [keyword, location, title, company, salary, details, date, link]
                     csv_writter.writerow (row_data)
 
                 # Load more pages

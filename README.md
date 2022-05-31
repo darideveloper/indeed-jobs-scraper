@@ -79,8 +79,8 @@ Countries, states or cities where do you want to extract data
 
 # Ouput data
 Sample:
-|keyword|location|title|company|details|date|
-|---|---|---|---|---|---|
-|frontend|Aguascalientes|Desarrollador web / Analista de IT|Scanner Forms S.A. DE C.V. 34 Aguascalientes San Francisco de los Romo|-Sexo indistinto -Escolaridad: Ingeniero en TIC´s titulado #javascript #frontend #php #mysql #software -Disponibilidad...|Hace 4 días
-|frontend|Aguascalientes|React Developer|bebo Technologies Mx Aguascalientes Aguascalientes|bebo MX is a leading IT software solution provider and IT services company. bebo MX is dedicated to providing high...|Hace 6 días
-|frontend|Aguascalientes|Programador/a|Clubmaple Aguascalientes Aguascalientes|Integración de innovación tecnológica en CRM de Laravel/Jquery SE REQUIERE FACTURA de pagos por Honorarios Duración de...|Más de 30 días
+|keyword|location|title|company|details|date|link|
+|---|---|---|---|---|---|---|
+|frontend|Aguascalientes|Desarrollador web / Analista de IT|Scanner Forms S.A...|-Sexo indistinto -Escolaridad: Ingeniero en TIC´s titulado #javascript #frontend #php...|Hace 4 días|mx.indeed.com/rc/clk?jk=49c2b625...|
+|frontend|Aguascalientes|React Developer|bebo Technologies Mx Aguascalientes ...|bebo MX is a leading IT software solution provider and IT services company. bebo MX is...|Hace 6 días|mx.indeed.com/rc/clk?jk=49c2b625...|
+|frontend|Aguascalientes|Programador/a|Clubmaple Aguascalientes Aguascaliente...|Integración de innovación tecnológica en CRM de Laravel/Jquery SE REQUIERE FACTURA de ...|Más de 30 días|mx.indeed.com/rc/clk?jk=49c2b625...|
